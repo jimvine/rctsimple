@@ -34,5 +34,15 @@
 #'   limits for each parameter. These will be labelled as (1 - level) / 2 and
 #'   1 - (1 - level) / 2 in \% (by default 2.5\% and 97.5\%).
 #' @examples
+#' dummy_rct_data_list   <- list(group1_t = 48, group1_f = 52,
+#'                               group2_t = 64, group2_f = 36)
+#' pd <- prevalence_difference(outcome_data = dummy_rct_data_list,
+#'                       groups = c("Control group", "Intervention group"),
+#'                       outcomes = c("Outcome occurred", "Outcome did not occur"))
+#' pr <- prevalence_ratio(outcome_data = dummy_rct_data_list,
+#'                       groups = c("Control group", "Intervention group"),
+#'                       outcomes = c("Outcome occurred", "Outcome did not occur"))
+#' confint(pd, c("estimate","p_group1","p_group2"))
+#' confint(pr, c("estimate","p_group1","p_group2"))
 #' @name confint-rctsimple
 NULL
