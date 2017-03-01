@@ -26,7 +26,7 @@
 #' As an absolute measure, the prevalence difference tends to create a
 #' relatively accurate impression of effect size. Some guides recommend
 #' presenting relative measures as well as absolute measures. If looking for
-#' a comparable relative measure, consider \code{prevalence_ratio}.
+#' a comparable relative measure, consider \code{\link{prevalence_ratio}}.
 #'
 #' The function is able to handle both individual and aggregate data.
 #' Individual data should be provided as a data.frame with two columns.
@@ -62,7 +62,8 @@
 #'   define the labels to the be applied in the output, and default values
 #'   will be used if not specified.
 #' @return The prevalence difference, indicating the extent to which the outcome
-#'   is more prevalent in group 2 than group 1.
+#'   is more prevalent in group 2 than group 1. Returns a list of objects if
+#'   there are more than 2 groups.
 #' @examples
 #' dummy_rct_data_list   <- list(group1_t = 48, group1_f = 52,
 #'                               group2_t = 64, group2_f = 36)
@@ -79,8 +80,22 @@
 #' prevalence_difference(outcome_data = dummy_rct_data_matrix,
 #'                       groups = c("Control group", "Group 1 - new treatment"),
 #'                       outcomes = c("Yes", "No"))
+#' # Multiple-arm studies are supported (4 groups in this example):
+#' dummy_rct_4 <- matrix(c(7,21,20,30,93,79,80,70),
+#'                       nrow=4,
+#'                       dimnames = list(c("Treatment as usual",
+#'                                         "Intervention 1",
+#'                                         "Intervention 2",
+#'                                         "Intervention 3"), c("Yes","No")))
+#' pd4 <- prevalence_difference(dummy_rct_4,
+#'                              groups = rownames(dummy_rct_4),
+#'                              outcomes = colnames(dummy_rct_4))
+#' # Returns a list of prevalence_difference objects.
+#' length(pd4)  # Length 3, comparing each of interventions 1-3 to TAU.
+#' pd4[[1]]
+#'
 #' @export
-
+#'
 prevalence_difference <- function(outcome_data,
                                   groups,
                                   outcomes,
@@ -95,6 +110,8 @@ prevalence_difference <- function(outcome_data,
 # =============================================================================
 # Used to give an error if an un-handled data type is passed.
 
+#' @export
+#'
 prevalence_difference.default <- function(outcome_data, ...) {
   stop(paste("Unknown type. This function has methods for taking raw data as",
              "a data.frame or processed data as a table (matrix) or named",
@@ -110,6 +127,8 @@ prevalence_difference.default <- function(outcome_data, ...) {
 # First column must be the Groups. Second must be the outcomes.
 # (If other columns etc., re-jig it first.)
 
+#' @export
+#'
 prevalence_difference.data.frame <- function(outcome_data,
                                              groups,
                                              outcomes,
@@ -170,6 +189,8 @@ prevalence_difference.data.frame <- function(outcome_data,
 # Works on list objects containing 4 elements.
 # Elements are group1_t, group1_f, group2_t, group2_f
 
+#' @export
+#'
 prevalence_difference.list <- function(outcome_data,
                                        groups = c("Control group",
                                                   "Intervention group"),
@@ -229,6 +250,8 @@ prevalence_difference.list <- function(outcome_data,
 # Whereas contingency tables made with table() are TRUE for both.
 # This is the workhorse function. All other methods end up here.
 
+#' @export
+#'
 prevalence_difference.matrix <- function(outcome_data,
                                          groups,
                                          outcomes,
@@ -394,10 +417,11 @@ prevalence_difference.matrix <- function(outcome_data,
 ###   https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/confint.html
 
 # @param level
-#   Confidence level for confidence intervals to be calculated at.
+#
 
+#' @rdname confint-rctsimple
 #' @export
-
+#'
 confint.prevalence_difference <- function(object,
                                           parm = "estimate",
                                           level = 0.95, ...) {

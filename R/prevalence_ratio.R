@@ -26,7 +26,7 @@
 #' As a relative measure, presenting the prevalence ratio on its own can tend
 #' to create an impression of a larger effect than an absolute measure.
 #' Consider using in association with an absolute measure, such as
-#' \code{prevalence_difference}.
+#' \code{\link{prevalence_difference}}.
 #'
 #' The function is able to handle both individual and aggregate data.
 #' Individual data should be provided as a data.frame with two columns.
@@ -36,7 +36,7 @@
 #' @inheritParams prevalence_difference
 #'
 #' @return The prevalence ratio, indicating the prevalence in group 2, relative
-#'   to group 1.
+#'   to group 1. Returns a list of objects if there are more than 2 groups.
 #' @examples
 #' dummy_rct_data_list   <- list(group1_t = 48, group1_f = 52,
 #'                               group2_t = 64, group2_f = 36)
@@ -53,6 +53,20 @@
 #' prevalence_ratio(outcome_data = dummy_rct_data_matrix,
 #'                       groups = c("Control group", "Group 1 - new treatment"),
 #'                       outcomes = c("Yes", "No"))
+#' # Multiple-arm studies are supported (4 groups in this example):
+#' dummy_rct_4 <- matrix(c(7,21,20,30,93,79,80,70),
+#'                       nrow=4,
+#'                       dimnames = list(c("Treatment as usual",
+#'                                         "Intervention 1",
+#'                                         "Intervention 2",
+#'                                         "Intervention 3"), c("Yes","No")))
+#' pr4 <- prevalence_ratio(dummy_rct_4,
+#'                              groups = rownames(dummy_rct_4),
+#'                              outcomes = colnames(dummy_rct_4))
+#' # Returns a list of prevalence_ratio objects.
+#' length(pr4)  # Length 3, comparing each of interventions 1-3 to TAU.
+#' pr4[[1]]
+#'
 #' @export
 #'
 prevalence_ratio <- function(outcome_data,
@@ -69,6 +83,8 @@ prevalence_ratio <- function(outcome_data,
 # =============================================================================
 # Used to give an error if an un-handled data type is passed.
 
+#' @export
+#'
 prevalence_ratio.default <- function(outcome_data, ...) {
   stop(paste("Unknown type. This function has methods for taking raw data as",
              "a data.frame or processed data as a table (matrix) or named",
@@ -84,6 +100,8 @@ prevalence_ratio.default <- function(outcome_data, ...) {
 # First column must be the Groups. Second must be the outcomes.
 # (If other columns etc., re-jig it first.)
 
+#' @export
+#'
 prevalence_ratio.data.frame <- function(outcome_data,
                                              groups,
                                              outcomes,
@@ -144,6 +162,8 @@ prevalence_ratio.data.frame <- function(outcome_data,
 # Works on list objects containing 4 elements.
 # Elements are group1_t, group1_f, group2_t, group2_f
 
+#' @export
+#'
 prevalence_ratio.list <- function(outcome_data,
                                   groups = c("Control group",
                                              "Intervention group"),
@@ -203,6 +223,8 @@ prevalence_ratio.list <- function(outcome_data,
 # Whereas contingency tables made with table() are TRUE for both.
 # This is the workhorse function. All other methods end up here.
 
+#' @export
+#'
 prevalence_ratio.matrix <- function(outcome_data,
                                          groups,
                                          outcomes,
@@ -370,8 +392,13 @@ prevalence_ratio.matrix <- function(outcome_data,
 # @param level
 #   Confidence level for confidence intervals to be calculated at.
 
-#' @export
 
+
+
+
+#' @rdname confint-rctsimple
+#' @export
+#'
 confint.prevalence_ratio <- function(object,
                                      parm = "estimate",
                                      level = 0.95, ...) {

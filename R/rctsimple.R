@@ -19,7 +19,7 @@
 #'
 #' @section Confidence intervals:
 #' Methods are provided for the \code{confint} function for the objects created
-#' by the effect size measure functions.
+#' by the effect size measure functions. See \code{\link{confint-rctsimple}}.
 #'
 #' @section Conclusions from confidence intervals:
 #' A function, \code{\link{ci_conclusion}}, is provided to output simple
