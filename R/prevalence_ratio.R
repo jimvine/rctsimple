@@ -14,6 +14,25 @@
 #' Calculates the prevalence ratio of a binary / dichotomous outcome
 #' between two or more groups, from individual or aggregate data.
 #'
+#' The prevalence ratio is defined for binary / dichotomous outcomes in a
+#' trial. In each group, the prevalence is the number of participants for whom
+#' the outcome occured as a proportion of the total number of participants in
+#' that group. For example, if 15 participants out of 100 in a group achieved
+#' the outcome in question, the prevalence for that group would be 0.15 (15%).
+#'
+#' The prevalence ratio is the ratio of the prevalence of the outcome in an
+#' intervention group to the prevalence in the control group.
+#'
+#' As a relative measure, presenting the prevalence ratio on its own can tend
+#' to create an impression of a larger effect than an absolute measure.
+#' Consider using in association with an absolute measure, such as
+#' \code{prevalence_difference}.
+#'
+#' The function is able to handle both individual and aggregate data.
+#' Individual data should be provided as a data.frame with two columns.
+#' Aggregate data can be provided as either a named list or a matrix with
+#' named rows and columns.
+#'
 #' @param outcome_data
 #'   Data providing the outcomes against the groups. Can be provided as raw
 #'   (i.e., participant-level) data, detailing row-by-row the the group and
@@ -45,7 +64,7 @@
 #'   to group 1.
 #' @examples
 #' dummy_rct_data_list   <- list(group1_t = 48, group1_f = 52,
-#                               group2_t = 64, group2_f = 36)
+#'                               group2_t = 64, group2_f = 36)
 #' prevalence_ratio(outcome_data = dummy_rct_data_list,
 #'                       groups = c("Control group", "Intervention group"),
 #'                       outcomes = c("Outcome occurred", "Outcome did not occur"))
@@ -57,9 +76,10 @@
 #'                                                     "Control group"),
 #'                                                   c("No","Yes")))
 #' prevalence_ratio(outcome_data = dummy_rct_data_matrix,
-#'                       groups = c("Control group", "Intervention group"),
+#'                       groups = c("Control group", "Group 1 - new treatment"),
 #'                       outcomes = c("Yes", "No"))
-
+#' @export
+#'
 prevalence_ratio <- function(outcome_data,
                                   groups,
                                   outcomes,
@@ -375,6 +395,7 @@ prevalence_ratio.matrix <- function(outcome_data,
 # @param level
 #   Confidence level for confidence intervals to be calculated at.
 
+#' @export
 
 confint.prevalence_ratio <- function(object,
                                      parm = "estimate",

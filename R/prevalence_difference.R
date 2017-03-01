@@ -14,6 +14,26 @@
 #' Calculates the prevalence difference of a binary / dichotomous outcome
 #' between two or more groups, from individual or aggregate data.
 #'
+#' The prevalence difference is defined for binary / dichotomous outcomes in a
+#' trial. In each group, the prevalence is the number of participants for whom
+#' the outcome occured as a proportion of the total number of participants in
+#' that group. For example, if 15 participants out of 100 in a group achieved
+#' the outcome in question, the prevalence for that group would be 0.15 (15%).
+#'
+#' The prevalence difference is the difference between the prevalence of the
+#' outcome in an intervention group and the prevalence in the control group.
+#'
+#' As an absolute measure, the prevalence difference tends to create a
+#' relatively accurate impression of effect size. Some guides recommend
+#' presenting relative measures as well as absolute measures. If looking for
+#' a comparable relative measure, consider \code{prevalence_ratio}.
+#'
+#' The function is able to handle both individual and aggregate data.
+#' Individual data should be provided as a data.frame with two columns.
+#' Aggregate data can be provided as either a named list or a matrix with
+#' named rows and columns.
+#'
+#'
 #' @param outcome_data
 #'   Data providing the outcomes against the groups. Can be provided as raw
 #'   (i.e., participant-level) data, detailing row-by-row the the group and
@@ -45,7 +65,7 @@
 #'   is more prevalent in group 2 than group 1.
 #' @examples
 #' dummy_rct_data_list   <- list(group1_t = 48, group1_f = 52,
-#                               group2_t = 64, group2_f = 36)
+#'                               group2_t = 64, group2_f = 36)
 #' prevalence_difference(outcome_data = dummy_rct_data_list,
 #'                       groups = c("Control group", "Intervention group"),
 #'                       outcomes = c("Outcome occurred", "Outcome did not occur"))
@@ -57,8 +77,9 @@
 #'                                                     "Control group"),
 #'                                                   c("No","Yes")))
 #' prevalence_difference(outcome_data = dummy_rct_data_matrix,
-#'                       groups = c("Control group", "Intervention group"),
+#'                       groups = c("Control group", "Group 1 - new treatment"),
 #'                       outcomes = c("Yes", "No"))
+#' @export
 
 prevalence_difference <- function(outcome_data,
                                   groups,
@@ -360,7 +381,7 @@ prevalence_difference.matrix <- function(outcome_data,
 # Provide a confint method for prevalence_difference objects.
 # confint is from ::stats
 
-# Uses the common approximation, implicilyt including assumptions of
+# Uses the common approximation, implicitly including assumptions of
 # normality. Will not work well for small sample sizes. Also, does not check
 # validity of bounds. For example, with an absolute measure where the only
 # valid values are in the region -1 to +1 (prevalence_difference) with an
@@ -375,6 +396,7 @@ prevalence_difference.matrix <- function(outcome_data,
 # @param level
 #   Confidence level for confidence intervals to be calculated at.
 
+#' @export
 
 confint.prevalence_difference <- function(object,
                                           parm = "estimate",
