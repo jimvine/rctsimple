@@ -2,5 +2,6 @@
 
 S3method(confint,prevalence_difference)
 S3method(confint,prevalence_ratio)
+export(ci_conclusion)
 export(prevalence_difference)
 export(prevalence_ratio)

@@ -41,11 +41,13 @@
 #' ci_test <- matrix(c(-0.1,0.1),
 #'                   nrow = 1, dimnames = list("estimate",
 #'                                             c("2.5 %","97.5 %")))
-#' conc <- ci_conclusion(ci_test)
-#' conc <- ci_conclusion(ci_test, test_type = "noninferiority", margin=0.15)
-#' conc <- ci_conclusion(ci_test, test_type = "equivalence", margin=0.15)
-#' conc <- ci_conclusion(ci_test, test_type = "equivalence", margin=0.05)
-
+#' ci_conclusion(ci_test)
+#' ci_conclusion(ci_test, test_type = "noninferiority", margin=0.15)
+#' ci_conclusion(ci_test, test_type = "equivalence", margin=0.15)
+#' ci_conclusion(ci_test, test_type = "equivalence", margin=0.05)
+#'
+#' @export
+#'
 ci_conclusion <- function(ci,
                           groups = c("Control intervention",
                                      "Test intervention"),
@@ -246,4 +248,6 @@ ci_conclusion <- function(ci,
                 conclusion_md = conclusion_md)
 
   # class(concs) <- "conclusion_ci"
+
+  return(concs)
 }

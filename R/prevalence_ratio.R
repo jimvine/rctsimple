@@ -33,33 +33,8 @@
 #' Aggregate data can be provided as either a named list or a matrix with
 #' named rows and columns.
 #'
-#' @param outcome_data
-#'   Data providing the outcomes against the groups. Can be provided as raw
-#'   (i.e., participant-level) data, detailing row-by-row the the group and
-#'   outcome for each participant. Can also be provided as aggregate data.
-#'   Valid input types are:
-#'     data.frame with 2 columns and a row for each participant, where the
-#'       first column contains the participant's group, second column
-#'       contains the participant's outcome;
-#'     matrix containing a contingency table of the groups against the
-#'       outcomes, with 2 columns (one for the 'outcome occurred' state and
-#'       one for the 'outcome did not occur' state), and a named row for each
-#'       group;
-#'     list with 4 named elements, group1_t, group1_f, group2_t and group2_f,
-#'       giving the number of participants in each category, where group1 is
-#'       the control group and group2 is the intervention group, and t is the
-#'       'outcome occurred' state and f is the 'outcome did not occur' state.
-#' @param groups
-#'   Character vector of the groups in the order in which they should be
-#'   analysed, starting with the control group. For list data the parameter
-#'   will define the labels to be applied in the output, and default values
-#'   will be used if not specified.
-#' @param outcomes
-#'   Character vector of length 2 specifying the labels used in the data for
-#'   the two outcome states, with the 'outcome occurred' state listed first and
-#'   the 'outcome did not occur' state second. For list data the parameter will
-#'   define the labels to the be applied in the output, and default values
-#'   will be used if not specified.
+#' @inheritParams prevalence_difference
+#'
 #' @return The prevalence ratio, indicating the prevalence in group 2, relative
 #'   to group 1.
 #' @examples
