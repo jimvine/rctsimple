@@ -2,7 +2,7 @@ Package: rctsimple
 Type: Package
 Title: Simple Analysis of Outcome Data from Randomised Controlled Trials (RCTs)
 Version: 0.1.0
-Author@R: person("Jim", "Vine", email = "code@jimvine.co.uk", 
+Authors@R: person("Jim", "Vine", email = "code@jimvine.co.uk", 
     role = c("aut", "cre"))
 Description: Functions for analysing data from randomised controlled trials
     (RCTs), supporting both aggregate and raw (participant-level) data. This
