@@ -491,7 +491,7 @@ confint.prevalence_difference <- function(object,
   level_end <- (1 - level) / 2
   level_ends_pc <- c(paste(level_end * 100, "%"),
                      paste((1-level_end) * 100, "%"))
-  z <- qnorm(c(level_end, 1 - level_end))
+  z <- stats::qnorm(c(level_end, 1 - level_end))
 
   ci <- matrix(data = NA,
                nrow = length(parm),
