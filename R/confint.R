@@ -16,6 +16,10 @@
 #' These \code{confint} methods calculate the relevant confidence intervals
 #' for the objects created in the \code{rctsimple} package.
 #'
+#' The \code{...} argument is included for consistency with the \code{confint}
+#' definition in  \code{stats} (and \code{MASS}). No additional arguments are
+#' used by the methods provided in this package.
+#'
 #' @param object
 #'   an object containing an effect size estimate (and possibly other
 #'   parameters). Methods currently exist for the classes
@@ -29,6 +33,9 @@
 #'
 #' @param level
 #'   Confidence level for confidence intervals to be calculated at.
+#'
+#' @param ...
+#'   additional argument(s) for methods (provided for consistency with generic)
 #'
 #' @return A matrix (or vector) with columns giving lower and upper confidence
 #'   limits for each parameter. These will be labelled as (1 - level) / 2 and

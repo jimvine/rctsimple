@@ -24,6 +24,8 @@ interval for the effect size estimate. Valid options are c("estimate",
 "p_group1", "p_group2")}
 
 \item{level}{Confidence level for confidence intervals to be calculated at.}
+
+\item{...}{additional argument(s) for methods (provided for consistency with generic)}
 }
 \value{
 A matrix (or vector) with columns giving lower and upper confidence
@@ -41,6 +43,10 @@ objects.
 
 These \code{confint} methods calculate the relevant confidence intervals
 for the objects created in the \code{rctsimple} package.
+
+The \code{...} argument is included for consistency with the \code{confint}
+definition in  \code{stats} (and \code{MASS}). No additional arguments are
+used by the methods provided in this package.
 }
 \examples{
 dummy_rct_data_list   <- list(group1_t = 48, group1_f = 52,
