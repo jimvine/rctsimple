@@ -71,8 +71,7 @@
 #'
 prevalence_ratio <- function(outcome_data,
                                   groups,
-                                  outcomes,
-                                  data_name = NULL) {
+                                  outcomes) {
   UseMethod("prevalence_ratio", outcome_data)
 }
 
@@ -104,8 +103,7 @@ prevalence_ratio.default <- function(outcome_data, ...) {
 #'
 prevalence_ratio.data.frame <- function(outcome_data,
                                              groups,
-                                             outcomes,
-                                             data_name = NULL) {
+                                             outcomes) {
 
   # Validate the input --------------------------------------------------------
 
@@ -131,14 +129,9 @@ prevalence_ratio.data.frame <- function(outcome_data,
                ifelse(ncol(outcome_table)>2,"many","few"), "values."))}
 
 
-  if(is.null(data_name)) {
-    data_name <- deparse(substitute(outcome_data))
-  }
-
   pr <- prevalence_ratio(outcome_table,
                          groups = groups,
-                         outcomes = outcomes,
-                         data_name = data_name)
+                         outcomes = outcomes)
 }
 
 
@@ -168,8 +161,7 @@ prevalence_ratio.list <- function(outcome_data,
                                   groups = c("Control group",
                                              "Intervention group"),
                                   outcomes = c("Outcome occurred",
-                                               "Outcome did not occur"),
-                                  data_name = NULL) {
+                                               "Outcome did not occur")) {
 
   # Validate the input: outcome_data list -------------------------------------
 
@@ -181,15 +173,6 @@ prevalence_ratio.list <- function(outcome_data,
   # Check the groups argument (special version for exactly 2 groups required)
   arg_check_groups_2(groups)
 
-  # Create data_name if not set -----------------------------------------------
-
-  if(is.null(data_name)) {
-    data_name <- deparse(substitute(outcome_data))
-    # data_name <- if (is.null(data_name)) {
-    # paste("Contingency table comprising values",
-    #       group1_t,group1_f,group2_t,group2_f)}
-  }
-
   # Set up matrix to pass to workhorse function -------------------------------
 
   outcome_matrix <- matrix(data=c(outcome_data$group1_t, outcome_data$group1_f,
@@ -199,8 +182,7 @@ prevalence_ratio.list <- function(outcome_data,
 
   pr <- prevalence_ratio(outcome_matrix,
                               groups = groups,
-                              outcomes = outcomes,
-                              data_name = data_name)
+                              outcomes = outcomes)
 
   return(pr)
 
@@ -227,8 +209,7 @@ prevalence_ratio.list <- function(outcome_data,
 #'
 prevalence_ratio.matrix <- function(outcome_data,
                                          groups,
-                                         outcomes,
-                                         data_name = NULL) {
+                                         outcomes) {
 
   # Validate the input: rows / groups -----------------------------------------
 
@@ -267,13 +248,6 @@ prevalence_ratio.matrix <- function(outcome_data,
   arg_check_outcomes_dichotomous(outcomes)
 
 
-
-
-  # Create data_name if not set -----------------------------------------------
-
-  if(is.null(data_name)) {
-    data_name <- deparse(substitute(outcome_data))
-    }
 
 
   # Reorder the dataset -------------------------------------------------------
@@ -318,18 +292,11 @@ prevalence_ratio.matrix <- function(outcome_data,
     pr_details <- list(estimate = pr,
                        p_group1 = p_group1,
                        p_group2 = p_group2,
-                       method="Prevalence ratio estimate",
-                       data.name = data_name,
                        data = outcome_data)
 
     class(pr_details) <- "prevalence_ratio"
 
-    # TODO: Consider alternative ways of holding these.
-    #       ? As part of $data.name
-    #       ? As a new named element within the htest list
-    #       ? In the $method text
-    #       ? In names( $estimate)
-    # Attaching the group labels to the returned htest object as a "groups" attr.
+
     attr(pr_details, "groups") <- groups
 
     return(pr_details)
@@ -356,8 +323,7 @@ prevalence_ratio.matrix <- function(outcome_data,
       prlist[[comp_num]] <-
         prevalence_ratio(outcome_data_2,
                               groups = groups_2,
-                              outcomes = outcomes,
-                              data_name = data_name)
+                              outcomes = outcomes)
     }
     return(prlist)
   }
@@ -383,11 +349,6 @@ prevalence_ratio.matrix <- function(outcome_data,
 # valid values are in the region -1 to +1 (prevalence_ratio) with an
 # estimate close to 1, the returned CI may extend past 1.
 
-
-## TODO: Do I need to provide any documentation when providing a method for
-##       an existing generic?
-## Yes, seems useful. See this, f.e.:
-###   https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/confint.html
 
 # @param level
 #   Confidence level for confidence intervals to be calculated at.

@@ -98,8 +98,7 @@
 #'
 prevalence_difference <- function(outcome_data,
                                   groups,
-                                  outcomes,
-                                  data_name = NULL) {
+                                  outcomes) {
   UseMethod("prevalence_difference", outcome_data)
 }
 
@@ -131,8 +130,7 @@ prevalence_difference.default <- function(outcome_data, ...) {
 #'
 prevalence_difference.data.frame <- function(outcome_data,
                                              groups,
-                                             outcomes,
-                                             data_name = NULL) {
+                                             outcomes) {
 
   # Validate the input --------------------------------------------------------
 
@@ -158,14 +156,10 @@ prevalence_difference.data.frame <- function(outcome_data,
                ifelse(ncol(outcome_table)>2,"many","few"), "values."))}
 
 
-  if(is.null(data_name)) {
-    data_name <- deparse(substitute(outcome_data))
-  }
 
   pd <- prevalence_difference(outcome_table,
                               groups = groups,
-                              outcomes = outcomes,
-                              data_name = data_name)
+                              outcomes = outcomes)
 }
 
 
@@ -195,8 +189,7 @@ prevalence_difference.list <- function(outcome_data,
                                        groups = c("Control group",
                                                   "Intervention group"),
                                        outcomes = c("Outcome occurred",
-                                                    "Outcome did not occur"),
-                                       data_name = NULL) {
+                                                    "Outcome did not occur")) {
 
   # Validate the input: outcome_data list -------------------------------------
 
@@ -208,14 +201,6 @@ prevalence_difference.list <- function(outcome_data,
   # Check the groups argument (special version for exactly 2 groups required)
   arg_check_groups_2(groups)
 
-  # Create data_name if not set -----------------------------------------------
-
-  if(is.null(data_name)) {
-    data_name <- deparse(substitute(outcome_data))
-    # data_name <- if (is.null(data_name)) {
-    # paste("Contingency table comprising values",
-    #       group1_t,group1_f,group2_t,group2_f)}
-  }
 
   # Set up matrix to pass to workhorse function -------------------------------
 
@@ -226,8 +211,7 @@ prevalence_difference.list <- function(outcome_data,
 
   pd <- prevalence_difference(outcome_matrix,
                               groups = groups,
-                              outcomes = outcomes,
-                              data_name = data_name)
+                              outcomes = outcomes)
 
   return(pd)
 
@@ -254,8 +238,7 @@ prevalence_difference.list <- function(outcome_data,
 #'
 prevalence_difference.matrix <- function(outcome_data,
                                          groups,
-                                         outcomes,
-                                         data_name = NULL) {
+                                         outcomes) {
 
   # Validate the input: rows / groups -----------------------------------------
 
@@ -295,14 +278,6 @@ prevalence_difference.matrix <- function(outcome_data,
 
 
 
-
-  # Create data_name if not set -----------------------------------------------
-
-  if(is.null(data_name)) {
-    data_name <- deparse(substitute(outcome_data))
-    }
-
-
   # Reorder the dataset -------------------------------------------------------
 
   # Sort the rows based on the groups argument
@@ -336,31 +311,20 @@ prevalence_difference.matrix <- function(outcome_data,
     pd <- p_group2 - p_group1
 
 
-
     # Assemble elements for output ----------------------------------------------
 
     names(pd) <- "prevalence difference"
 
-
     pd_details <- list(estimate = pd,
                        p_group1 = p_group1,
                        p_group2 = p_group2,
-                       method="Prevalence difference estimate",
-                       data.name = data_name,
                        data = outcome_data)
 
     class(pd_details) <- "prevalence_difference"
 
-    # TODO: Consider alternative ways of holding these.
-    #       ? As part of $data.name
-    #       ? As a new named element within the htest list
-    #       ? In the $method text
-    #       ? In names( $estimate)
-    # Attaching the group labels to the returned htest object as a "groups" attr.
     attr(pd_details, "groups") <- groups
 
     return(pd_details)
-
 
 
   }
@@ -383,8 +347,7 @@ prevalence_difference.matrix <- function(outcome_data,
       pdlist[[comp_num]] <-
         prevalence_difference(outcome_data_2,
                               groups = groups_2,
-                              outcomes = outcomes,
-                              data_name = data_name)
+                              outcomes = outcomes)
     }
     return(pdlist)
   }
@@ -410,11 +373,6 @@ prevalence_difference.matrix <- function(outcome_data,
 # valid values are in the region -1 to +1 (prevalence_difference) with an
 # estimate close to 1, the returned CI may extend past 1.
 
-
-## TODO: Do I need to provide any documentation when providing a method for
-##       an existing generic?
-## Yes, seems useful. See this, f.e.:
-###   https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/confint.html
 
 # @param level
 #

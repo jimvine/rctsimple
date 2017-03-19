@@ -4,7 +4,7 @@
 \alias{prevalence_difference}
 \title{Prevalence difference of an outcome between groups.}
 \usage{
-prevalence_difference(outcome_data, groups, outcomes, data_name = NULL)
+prevalence_difference(outcome_data, groups, outcomes)
 }
 \arguments{
 \item{outcome_data}{Data providing the outcomes against the groups. Can be provided as raw

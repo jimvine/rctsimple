@@ -4,7 +4,7 @@
 \alias{prevalence_ratio}
 \title{Prevalence ratio of an outcome between groups.}
 \usage{
-prevalence_ratio(outcome_data, groups, outcomes, data_name = NULL)
+prevalence_ratio(outcome_data, groups, outcomes)
 }
 \arguments{
 \item{outcome_data}{Data providing the outcomes against the groups. Can be provided as raw
