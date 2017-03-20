@@ -18,7 +18,7 @@
 parameters). Methods currently exist for the classes
 \code{prevalence_difference} and \code{prevalence_ratio}.}
 
-\item{parm}{Vector of names specifying which parameters confidence intervals,
+\item{parm}{Vector of names specifying which parameters' confidence intervals,
 are to be calculated for. Defaults to just calculating the confidence
 interval for the effect size estimate. Valid options are c("estimate",
 "p_group1", "p_group2")}

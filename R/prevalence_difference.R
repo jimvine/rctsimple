@@ -18,7 +18,8 @@
 #' trial. In each group, the prevalence is the number of participants for whom
 #' the outcome occured as a proportion of the total number of participants in
 #' that group. For example, if 15 participants out of 100 in a group achieved
-#' the outcome in question, the prevalence for that group would be 0.15 (15%).
+#' the outcome in question, the prevalence for that group would be 0.15 (15
+#' per cent).
 #'
 #' The prevalence difference is the difference between the prevalence of the
 #' outcome in an intervention group and the prevalence in the control group.
@@ -31,25 +32,34 @@
 #' The function is able to handle both individual and aggregate data.
 #' Individual data should be provided as a data.frame with two columns.
 #' Aggregate data can be provided as either a named list or a matrix with
-#' named rows and columns.
+#' named rows and columns. Data should be provided using one of the following
+#' options:
 #'
+#' \itemize{
+#'   \item \strong{data.frame}: 2 columns and a row for each participant.
+#'       The first column contains the participant's group, second column
+#'       contains the participant's outcome;
+#'   \item \strong{matrix}: a contingency table of the groups against the
+#'       outcomes, with 2 columns (one for the 'outcome occurred' state and
+#'       one for the 'outcome did not occur' state), and a named row for each
+#'       group;
+#'   \item \strong{list}: 4 named elements, \code{group1_t}, \code{group1_f},
+#'       \code{group2_t} and \code{group2_f}, giving the number of
+#'       participants in each category. group1 is the control group and
+#'       group2 is the intervention group; _t is the 'outcome occurred'
+#'       state and _f is the 'outcome did not occur' state.
+#' }
+#'
+#' The list method only supports two groups. The other methods support
+#' multiple groups (by multiple rows for matrices and multiple entries in the
+#' 'group' column for data.frames).
 #'
 #' @param outcome_data
 #'   Data providing the outcomes against the groups. Can be provided as raw
 #'   (i.e., participant-level) data, detailing row-by-row the the group and
 #'   outcome for each participant. Can also be provided as aggregate data.
-#'   Valid input types are:
-#'     data.frame with 2 columns and a row for each participant, where the
-#'       first column contains the participant's group, second column
-#'       contains the participant's outcome;
-#'     matrix containing a contingency table of the groups against the
-#'       outcomes, with 2 columns (one for the 'outcome occurred' state and
-#'       one for the 'outcome did not occur' state), and a named row for each
-#'       group;
-#'     list with 4 named elements, group1_t, group1_f, group2_t and group2_f,
-#'       giving the number of participants in each category, where group1 is
-#'       the control group and group2 is the intervention group, and t is the
-#'       'outcome occurred' state and f is the 'outcome did not occur' state.
+#'   Valid input types are data.frame, matrix and list; see Details for
+#'   formats.
 #' @param groups
 #'   Character vector of the groups in the order in which they should be
 #'   analysed, starting with the control group. For list data the parameter
@@ -156,25 +166,11 @@ prevalence_difference.data.frame <- function(outcome_data,
                ifelse(ncol(outcome_table)>2,"many","few"), "values."))}
 
 
-
   pd <- prevalence_difference(outcome_table,
                               groups = groups,
                               outcomes = outcomes)
 }
 
-
-
-
-
-# TODO: How to document these for the list data type?
-# @param group1_t
-#   The number of participants in group 1 for whom the outcome occured.
-# @param group1_f
-#   The number of participants in group 1 for whom the outcome did not occur.
-# @param group2_t
-#   The number of participants in group 2 for whom the outcome occured.
-# @param group2_f
-#   The number of participants in group 2 for whom the outcome did not occur.
 
 
 # =============================================================================
@@ -255,9 +251,6 @@ prevalence_difference.matrix <- function(outcome_data,
   # Check the outcomes (columns) of the outcome_data argument
   arg_check_outcome_data_matrix_outcomes_dichotomous(outcome_data)
   # Check the outcomes argument
-  #   (These will be run in the list method anyway, but checking here ensures
-  #   the relevant meaningful error would be thrown, rather than getting a less
-  #   meaningful error if the code tries to do something with it.)
   arg_check_outcomes_dichotomous(outcomes)
   # Check the outcomes argument against outcome_data
   args_check_outcomes__outcome_data_matrix(outcomes,outcome_data)
@@ -368,14 +361,11 @@ prevalence_difference.matrix <- function(outcome_data,
 # confint is from ::stats
 
 # Uses the common approximation, implicitly including assumptions of
-# normality. Will not work well for small sample sizes. Also, does not check
-# validity of bounds. For example, with an absolute measure where the only
-# valid values are in the region -1 to +1 (prevalence_difference) with an
-# estimate close to 1, the returned CI may extend past 1.
+# normality. Will not work well for small sample sizes.
+# Also, at edge of valid regions, just clips.
+##  [0,1] for prevalences
+##  [-1,1] for prevalence differences
 
-
-# @param level
-#
 
 #' @rdname confint-rctsimple
 #' @export
