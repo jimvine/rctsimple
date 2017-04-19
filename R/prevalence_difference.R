@@ -169,6 +169,8 @@ prevalence_difference.data.frame <- function(outcome_data,
   pd <- prevalence_difference(outcome_table,
                               groups = groups,
                               outcomes = outcomes)
+
+  return(pd)
 }
 
 
@@ -226,8 +228,6 @@ prevalence_difference.list <- function(outcome_data,
 # Works on matrix objects containing a contingency table.
 # Columns are outcomes (ncol must = 2)
 # Rows are groups (nrow must be >=2)
-# Items assembled using matrix() are TRUE for is.matrix but FALSE for is.table.
-# Whereas contingency tables made with table() are TRUE for both.
 # This is the workhorse function. All other methods end up here.
 
 #' @export
@@ -346,9 +346,16 @@ prevalence_difference.matrix <- function(outcome_data,
   }
 }
 
+# =============================================================================
+# Table method
+# =============================================================================
+# Simply uses the matrix one.
+# Although items assembled using table() are true for is.matrix() they do not
+# have matrix class so will not use the matrix method themselves.
 
-
-
+#' @export
+#'
+prevalence_difference.table <- prevalence_difference.matrix
 
 
 

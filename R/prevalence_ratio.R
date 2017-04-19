@@ -153,6 +153,8 @@ prevalence_ratio.data.frame <- function(outcome_data,
   pr <- prevalence_ratio(outcome_table,
                          groups = groups,
                          outcomes = outcomes)
+
+  return(pr)
 }
 
 
@@ -348,7 +350,16 @@ prevalence_ratio.matrix <- function(outcome_data,
 }
 
 
+# =============================================================================
+# Table method
+# =============================================================================
+# Simply uses the matrix one.
+# Although items assembled using table() are true for is.matrix() they do not
+# have matrix class so will not use the matrix method themselves.
 
+#' @export
+#'
+prevalence_ratio.table <- prevalence_ratio.matrix
 
 
 

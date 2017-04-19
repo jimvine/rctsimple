@@ -65,9 +65,9 @@ options:
       group;
   \item \strong{list}: 4 named elements, \code{group1_t}, \code{group1_f},
       \code{group2_t} and \code{group2_f}, giving the number of
-      participants in each category, where group1 is the control group and
-      group2 is the intervention group, and t is the 'outcome occurred'
-      state and f is the 'outcome did not occur' state.
+      participants in each category. group1 is the control group and
+      group2 is the intervention group; _t is the 'outcome occurred'
+      state and _f is the 'outcome did not occur' state.
 }
 
 The list method only supports two groups. The other methods support
