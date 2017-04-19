@@ -24,7 +24,7 @@ You can install rctsimple from github with:
 
 ```R
 # install.packages("devtools")
-devtools::install_github("rctsimple/jimvine")
+devtools::install_github("jimvine/rctsimple")
 ```
 
 ## Example
